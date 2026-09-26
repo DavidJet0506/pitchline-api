@@ -1,12 +1,15 @@
 export default async function handler(req, res) {
-  const API_KEY = process.env.API_FOOTBALL_KEY;
+  const rawKey = process.env.API_FOOTBALL_KEY;
+  const API_KEY = rawKey ? rawKey.trim() : rawKey;
   const { endpoint, ...params } = req.query;
 
   if (endpoint === 'debug') {
     return res.status(200).json({
-      keyExists: !!API_KEY,
-      keyLength: API_KEY ? API_KEY.length : 0,
-      keyStartsWith: API_KEY ? API_KEY.slice(0, 4) : null
+      keyExists: !!rawKey,
+      rawLength: rawKey ? rawKey.length : 0,
+      trimmedLength: API_KEY ? API_KEY.length : 0,
+      startsWith: API_KEY ? API_KEY.slice(0, 4) : null,
+      endsWith: API_KEY ? API_KEY.slice(-4) : null
     });
   }
 
